@@ -1,0 +1,59 @@
+---
+import { defaultLang, getTranslations, type Lang } from "@/i18n/translations"
+
+const { lang = defaultLang } = Astro.props as { lang?: Lang }
+const t = getTranslations(lang)
+---
+
+<button
+  type="button"
+  class="inline-flex items-center justify-center gap-2 px-4 py-1 text-gray-800 transition bg-gray-100 border border-gray-300 rounded-full dark:bg-gray-800 dark:border-gray-600 dark:text-white focus-visible:ring-yellow-500/80 text-md hover:bg-gray-900 hover:border-gray-700 hover:text-white dark:hover:bg-gray-100 dark:hover:border-gray-300 dark:hover:text-black group max-w-fit focus:outline-none focus-visible:outline-none focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-2 active:bg-black"
+  data-cv-download
+  data-lang={lang}
+  data-filename={t.hero.cvFileName}
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="size-4"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M12 15V3" />
+    <path d="m7 10 5 5 5-5" />
+    <path d="M5 21h14" />
+  </svg>
+  {t.hero.downloadCv}
+</button>
+
+<script>
+  import { downloadCvPdf } from "@/lib/cv-pdf"
+
+  const setupCvDownloadButtons = () => {
+    document.querySelectorAll<HTMLButtonElement>("[data-cv-download]").forEach((button) => {
+      if (button.dataset.bound === "true") return
+
+      button.dataset.bound = "true"
+      button.addEventListener("click", async () => {
+        const lang = button.dataset.lang === "en" ? "en" : "es"
+        const fileName = button.dataset.filename
+        button.disabled = true
+
+        try {
+          await downloadCvPdf(lang, fileName)
+        } finally {
+          button.disabled = false
+        }
+      })
+    })
+  }
+
+  setupCvDownloadButtons()
+  document.addEventListener("astro:page-load", setupCvDownloadButtons)
+</script>

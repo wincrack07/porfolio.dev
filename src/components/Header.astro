@@ -1,26 +1,30 @@
 ---
 import ThemeToggle from "./ThemeToggle.astro"
 
+import { defaultLang, type Lang, languages, getTranslations } from "@/i18n/translations"
+
+const { lang = defaultLang } = Astro.props as { lang?: Lang }
+const t = getTranslations(lang)
+
+const otherLang: Lang = lang === "es" ? "en" : "es"
+const basePath = lang === defaultLang ? "/" : `/${lang}/`
+const otherLangUrl = otherLang === defaultLang ? "/" : `/${otherLang}/`
+
 const navItems = [
   {
-    title: "Experiencia",
-    label: "experiencia",
-    url: "/#experiencia",
+    title: t.nav.experience,
+    label: "experience",
+    url: `${basePath}#experience`,
   },
   {
-    title: "Proyectos",
-    label: "proyectos",
-    url: "/#proyectos",
+    title: t.nav.about,
+    label: "about",
+    url: `${basePath}#about`,
   },
   {
-    title: "Sobre mí",
-    label: "sobre-mi",
-    url: "/#sobre-mi",
-  },
-  {
-    title: "Contacto",
+    title: t.nav.contact,
     label: "contacto",
-    url: "mailto:miduga@gmail.com",
+    url: "mailto:contacto@juliosaldana.com",
   },
 ]
 ---
@@ -42,6 +46,13 @@ const navItems = [
         </a>
       ))
     }
+    <a
+      class="relative block px-2 py-2 transition hover:text-blue-500 dark:hover:text-blue-500"
+      aria-label={t.nav.language}
+      href={otherLangUrl}
+    >
+      {Object.keys(languages).includes(otherLang) ? otherLang.toUpperCase() : "EN"}
+    </a>
     <ThemeToggle />
   </nav>
 </header>

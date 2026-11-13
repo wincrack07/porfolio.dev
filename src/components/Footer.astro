@@ -1,5 +1,10 @@
 ---
+import { defaultLang, getTranslations, type Lang } from "@/i18n/translations"
+
 const currentYear = new Date().getFullYear()
+const { lang = defaultLang } = Astro.props as { lang?: Lang }
+const t = getTranslations(lang)
+const basePath = lang === defaultLang ? "/" : `/${lang}/`
 ---
 
 <footer
@@ -10,18 +15,23 @@ const currentYear = new Date().getFullYear()
   >
     <span class="text-sm sm:text-center text-zinc-800/90 dark:text-zinc-200/90"
       >&copy; {currentYear}
-      <a href="https://midu.dev/" class="hover:underline">midudev</a>. Casi
-      todos los derechos reservados
+      <a href="https://juliosaldana.com" class="hover:underline"
+        >Julio Emilio Saldaña</a
+      >.
+      {t.footer.rights}
     </span>
     <ul
       class="flex flex-wrap items-center mt-3 text-sm font-medium dark:text-white/90 sm:mt-0"
     >
       <li>
-        <a href="/#sobre-mi" class="hover:underline me-4 md:me-6">Sobre mí</a>
+        <a href={`${basePath}#about`} class="hover:underline me-4 md:me-6">{t.footer.about}</a>
       </li>
       <li>
-        <a id="contacto" href="mailto:miduga@gmail.com" class="hover:underline"
-          >Contacto</a
+        <a
+          id="contacto"
+          href="mailto:contacto@juliosaldana.com"
+          class="hover:underline"
+          >{t.footer.contact}</a
         >
       </li>
     </ul>

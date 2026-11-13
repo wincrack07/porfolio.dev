@@ -1,48 +1,58 @@
 ---
-const personalImageAlt = "Miguel Ángel"
 import Badge from "@/components/Badge.astro"
+import CvDownloadButton from "@/components/CvDownloadButton.astro"
 import LinkedInIcon from "@/components/icons/LinkedIn.astro"
 import MailIcon from "@/components/icons/Mail.astro"
 import SocialPill from "@/components/SocialPill.astro"
+import WhatsAppIcon from "@/components/icons/WhatsApp.astro"
+
+import { defaultLang, getTranslations, type Lang } from "@/i18n/translations"
+
+const { lang = defaultLang } = Astro.props as { lang?: Lang }
+const t = getTranslations(lang)
+
+const personalImageAlt = "Julio Emilio Saldaña Quintero"
 ---
 
 <div class="max-w-xl">
   <div class="flex gap-4 mb-4">
     <img
       class="rounded-full shadow-lg size-16"
-      src="/midudev.webp"
+      src="/me.png"
       alt={personalImageAlt}
     />
     <a
-      href="https://linkedin.com/in/midudev"
+      href="https://linkedin.com/in/juliosaldanaq"
       target="_blank"
       rel="noopener"
       class="flex items-center transition md:justify-center md:hover:scale-105"
     >
-      <Badge>Disponible para trabajar</Badge>
+        <Badge>{t.hero.availability}</Badge>
     </a>
   </div>
   <h1
     class="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl dark:text-white"
   >
-    Hey, soy midudev
+    {t.hero.heading}
   </h1>
   <p
     class="mt-6 text-xl text-gray-800 dark:[&>strong]:text-yellow-200 [&>strong]:text-yellow-500 [&>strong]:font-semibold dark:text-gray-300"
   >
-    +15 años de experiencia. <strong
-      >Ingeniero de Software y Creador de Contenido sobre Programación</strong
-    > de Barcelona, España 🇪🇸. Especializado en el desarrollo de aplicaciones web
-    únicas.
+    <strong>{t.hero.taglineStrong}</strong>. {t.hero.tagline}
   </p>
   <nav class="flex flex-wrap gap-4 mt-8">
-    <SocialPill href="mailto:miduga@gmail.com">
+    <SocialPill href="mailto:contacto@juliosaldana.com">
       <MailIcon class="size-4" />
-      Contáctame
+      {t.hero.contactMe}
     </SocialPill>
-    <SocialPill href="https://linkedin.com/in/midudev">
+    <SocialPill href="https://wa.me/50761950196">
+      <WhatsAppIcon class="size-4" />
+      {t.hero.whatsapp}
+    </SocialPill>
+    <SocialPill href="https://linkedin.com/in/juliosaldanaq">
       <LinkedInIcon class="size-4" />
-      LinkedIn
+      {t.hero.linkedIn}
     </SocialPill>
+    <CvDownloadButton lang={lang} />
   </nav>
 </div>
